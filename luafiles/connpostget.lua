@@ -34,5 +34,7 @@
                        red:set(rdskey,rdsvalue)
                         end
                         )
-		ngx.say(err)
+		if not err then
+			ngx.say("suc")
+		end
 	end
