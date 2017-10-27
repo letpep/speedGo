@@ -34,9 +34,9 @@
                        red:set(rdskey,rdsvalue)
                         end
                         )
-		if res then
-			ngx.say("suc")
-		else
+		if err then
 			ngx.say("fail")
+		else
+			ngx.say("success")
 		end
 	end
