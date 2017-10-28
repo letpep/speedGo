@@ -21,7 +21,7 @@ end
     t1["key1"] = 'value1'
     t1['key2'] = 2
     jsonstr = json.encode(t1)
-    ngx.say(jsonstr)
+   -- ngx.say(jsonstr)
 --{"key2":2,"key1":"value1"}
     local json2 = '{"key2":2,"key1":"value1"}'
     local tt2 = json.decode(json2)
