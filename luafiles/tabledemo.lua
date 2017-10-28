@@ -13,5 +13,6 @@
     local t1 = {}
     t1["key1"] = 'value1'
     t1['key2'] = 2
-    jsonstr = json.encode(tablea)
+    jsonstr = json.encode(t1)
     ngx.say(jsonstr)
+--{"key2":3,"key1":"value1"}
