@@ -57,12 +57,12 @@ if val then
 end
 
 --- step 4:
-local val = ngx.location.capture("/redis_get_set", {
+local valres = ngx.location.capture("/redis_get_set", {
     method = ngx.HTTP_GET,
     args = {key = key}
 
 })
-
+ local val = valres["body"]
 if not val then
     local ok, err = lock:unlock()
     if not ok then
