@@ -7,7 +7,7 @@
 --
 local res1,res2 = ngx.location.capture_multi{
     {"/redis_get_set", {args="key=lixin"}},
-    {"/ordersuc"}
+    {"/orderservice-orderSuccess"}
 }
 
 ngx.header.content_type="text/plain"
