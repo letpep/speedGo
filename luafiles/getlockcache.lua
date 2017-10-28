@@ -7,6 +7,7 @@
 --
 local resty_lock = require "resty.lock"
 local cache = ngx.shared.my_cache
+local json = require("cjson")
 local key =nil
 args  = ngx.req.get_uri_args()
 for akey,val in pairs(args) do
@@ -76,7 +77,7 @@ if not val then
 end
 
 -- update the shm cache with the newly fetched value
-ngx.log(ngx.ERR,"key-value:",key.."-"..val)
+ngx.log(ngx.ERR,"key-value:",key.."-"..json.encode(val))
 local ok, err = cache:set(key, val, 1)
 if not ok then
     local ok, err = lock:unlock()
