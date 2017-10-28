@@ -15,7 +15,7 @@ for akey,val in pairs(args) do
         key = val
     end
 end
-ngx.log(ngx.ERR,"key:",key)
+--ngx.log(ngx.ERR,"key:",key)
 
 -- step 1:
 local val, err = cache:get(key)
@@ -77,7 +77,6 @@ if not val then
 end
 
 -- update the shm cache with the newly fetched value
-ngx.log(ngx.ERR,"key-value:",key.."-"..json.encode(val))
 local ok, err = cache:set(key, val, 1)
 if not ok then
     local ok, err = lock:unlock()
