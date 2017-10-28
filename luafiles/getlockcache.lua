@@ -14,6 +14,7 @@ for akey,val in pairs(args) do
         key = val
     end
 end
+ngx.log(ngx.ERR,"key:",key)
 
 -- step 1:
 local val, err = cache:get(key)
