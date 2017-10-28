@@ -76,6 +76,7 @@ if not val then
 end
 
 -- update the shm cache with the newly fetched value
+ngx.log(ngx.ERR,"key-value:",key.."-"..val)
 local ok, err = cache:set(key, val, 1)
 if not ok then
     local ok, err = lock:unlock()
