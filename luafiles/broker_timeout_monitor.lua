@@ -38,7 +38,7 @@ local resultd = json.decode(res.body)
 local hits = resultd["hits"]["total"]
 local res, err = httpc:request_uri("http://10.103.16.113/redis_get_set", {
     method = 'POST',
-    body = 'key=key&value='..hits,
+    body = 'key=hits&value='..hits,
     headers = {
         ["Content-Type"] = "application/json;charset=UTF-8",
 
