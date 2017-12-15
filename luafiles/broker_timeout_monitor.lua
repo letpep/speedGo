@@ -8,11 +8,22 @@
 local json = require("cjson")
 local http = require "resty.http"
 local httpc = http.new()
-local queryjson = '"query":{"bool":{"must":[{"query_string":{"analyze_wildcard":true,"query":"\"timed out\""}},{"match_phrase":{"path":{"query":"*errInvokerResult*"}}},{"range":{"@timestamp":{"gte":1513267200000,"lte":1513353599999,"format":"epoch_millis"}}}],"must_not":[]}}';
+--只需要从请求串中json里的到quer属性
+--切记查询字符串中加的双引号在这里要去掉，如下"timed out"
+local querypre = '"query":{"bool":{"must":[';
+local queryend = '],"must_not":[]}}';
+local queryString = '{"query_string":{"analyze_wildcard":true,"query":"timed out"}},'
+local querymatch = '{"match_phrase":{"path":{"query":"*errInvokerResult*"}}}'
+local nowtime = os.time();--时间戳 秒
+local last1hour = nowtime-60*60;--一小时前
 
+local querytime = '{"range":{"@timestamp":{"gte":'..1000*last1hour..',"format":"epoch_millis"}}}'
+local queryjson = querypre..queryString..','..querymatch..','..querytime..queryend;
+local request_boby = '{"version":true,"size":0,'..queryjson..'}'
+ngx.log(ngx.ERR,request_boby)
 local res, err = httpc:request_uri("http://10.102.4.254:5601/api/console/proxy?path=_search&method=POST", {
     method = 'POST',
-    body = '{"version":true,"size":0,'..queryjson..'}',
+    body = ''..request_boby,
     headers = {
         ["Content-Type"] = "application/json;charset=UTF-8",
         ["kbn-version"] = "5.6.4",
