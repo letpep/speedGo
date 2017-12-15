@@ -23,4 +23,4 @@ if not res then
     return
 end
 ngx.log(ngx.ERR,json.encode(res.body))
-ngx.say(json.encode(res.body))
+ngx.say(res.body)
