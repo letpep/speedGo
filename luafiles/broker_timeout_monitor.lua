@@ -12,7 +12,7 @@ local httpc = http.new()
 --切记查询字符串中加的双引号在这里要去掉，如下"timed out"
 local querypre = '"query":{"bool":{"must":[';
 local queryend = '],"must_not":[]}}';
-local queryString = '{"query_string":{"analyze_wildcard":true,"query":"timed out"}},'
+local queryString = '{"query_string":{"analyze_wildcard":true,"query":"timed out"}}'
 local querymatch = '{"match_phrase":{"path":{"query":"*errInvokerResult*"}}}'
 local nowtime = os.time();--时间戳 秒
 local last1hour = nowtime-60*60;--一小时前
