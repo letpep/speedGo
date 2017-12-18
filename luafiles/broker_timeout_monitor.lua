@@ -36,9 +36,9 @@ if not res then
 end
 local resultd = json.decode(res.body)
 local hits = resultd["hits"]["total"]
-if hits>10 then
+if hits>50 then
     local content ='当前超时'..hits..'次'
-    local res, err = httpc:request_uri("http://smsmonitor.sfbest.com/servletSend", {
+    local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
         method = 'POST',
         body = 'msgTel=18510512189&msgType=HOME&msgContent='..content,
         headers = {
