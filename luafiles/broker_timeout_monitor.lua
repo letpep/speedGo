@@ -42,10 +42,11 @@ if hits>10 then
         method = 'POST',
         body = 'msgTel=18510512189&msgType=HOME&msgContent='..content,
         headers = {
-            ["Content-Type"] = "application/json;charset=UTF-8",
+            ["Content-Type"] = "application/x-www-form-urlencoded",
 
         }
     })
+
 end
 
 ngx.say(hits)
