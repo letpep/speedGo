@@ -36,14 +36,16 @@ if not res then
 end
 local resultd = json.decode(res.body)
 local hits = resultd["hits"]["total"]
-local res, err = httpc:request_uri("http://10.103.16.113/redis_get_set", {
-    method = 'POST',
-    body = 'key=hits&value='..hits,
-    headers = {
-        ["Content-Type"] = "application/json;charset=UTF-8",
+if hits>10 then
+    local content ='当前超时'..hits..'次'
+    local res, err = httpc:request_uri("http://smsmonitor.sfbest.com/servletSend", {
+        method = 'POST',
+        body = 'msgTel=18510512189&msgType=HOME&msgContent='..content,
+        headers = {
+            ["Content-Type"] = "application/json;charset=UTF-8",
 
-    }
-})
-
+        }
+    })
+end
 
 ngx.say(hits)
