@@ -15,7 +15,7 @@ local queryend = '],"must_not":[]}}';
 local queryString = '{"query_string":{"analyze_wildcard":true,"query":"timed out"}}'
 local querymatch = '{"match_phrase":{"path":{"query":"*errInvokerResult*"}}}'
 local nowtime = os.time();--时间戳 秒
-local nowtimestr =  os.date("%Y%m%d %H%m",os.time())
+local nowtimestr = os.date("%Y-%m-%d %H:%m",os.time())
 local last1hour = nowtime-60*60;--一小时前
 
 local querytime = '{"range":{"@timestamp":{"gte":'..1000*last1hour..',"format":"epoch_millis"}}}'
