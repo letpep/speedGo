@@ -13,14 +13,14 @@ local res, err = red:exec(
         return red:keys('*')
     end
 )
-for key in pairs(json.encode(res)) do
-    ngx.log(ngx.ERR,key)
+for key,value in pairs(res) do
+    ngx.log(ngx.ERR,'key:'..value)
     local res2, err2 = red:exec(
         function(red)
-            return red:strlen(key)
+            return red:strlen(''..value)
         end
     )
-    ngx.log(ngx.ERR,json.encode(res2))
+    ngx.log(ngx.ERR,json.encode('key:'..value..'---size:'..res2))
 end
 
 
