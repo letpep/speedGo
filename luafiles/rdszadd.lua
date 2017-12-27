@@ -18,7 +18,6 @@
 				rdsscore = val
                 	end
         	end
-		ngx.say(rdskey..rdsscore..rdsvalue)
 		local res, err = red:exec(
                         function(red)
                        red:zadd(rdskey,rdsscore,rdsvalue)
