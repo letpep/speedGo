@@ -9,7 +9,6 @@
 local redis = require("resty.rediscli-speedgo")
 local json = require("cjson")
 local http = require ("resty.http")
-local strutil = require ("resty.string")
 local httpc = http.new()
 httpc:set_timeout(500)
 local red = redis.new()
@@ -73,9 +72,10 @@ local startms = os.time()
             local res1 = ngx.location.capture_multi{
                 {"/redis_get_set", {args="key=sendWXMsgtoken"}}
             }
-
-            local wxurl ='wget --no-check-certificate https://sc.ftqq.com/'..res1.body..'.send?text='..content
-            ngx.log(ngx.ERR,'wxurl'..strutil.len('hello'))
+            local lenth = string.len(res1.body)
+            local token = string.sub(res1.body,1,lenth-1)
+            local wxurl ='wget --no-check-certificate https://sc.ftqq.com/'..token..'.send?text='..content
+            ngx.log(ngx.ERR,'wxurl'..wxurl)
             local handle =io.popen(wxurl)
             local result = handle:read("*a")
             handle:close()
