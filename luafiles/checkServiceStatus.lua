@@ -53,7 +53,7 @@ local rdskey = 'serversStatus'
             end
         end
         if not httpres then
-            ngx.log(ngx.ERR,'httpresponse is ERROR url:'..'url')
+            ngx.log(ngx.ERR,'httpresponse is ERROR url:'..url)
         end
 
 
