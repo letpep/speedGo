@@ -68,7 +68,11 @@ local startms = os.time()
                 }
             })
 --发送微信消息
-            local handle =io.popen('wget --no-check-certificate https://sc.ftqq.com/SCU18938Tccaabd2253cc5b537ba57120fef0184a5a4391bb01819.send?text='..content)
+        --从redis获取发微信url
+            local res1 = ngx.location.capture_multi{
+                {"/redis_get_set", {args="key=sendWXMsgtoken"}}
+            }
+            local handle =io.popen('wget --no-check-certificate https://sc.ftqq.com/'..res1.body..'.send?text='..content)
             local result = handle:read("*a")
             handle:close()
 
