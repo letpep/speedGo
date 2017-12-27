@@ -8,7 +8,8 @@
 -- 从redis 服务的访问地址 ，然后就行wget ，如果能正常访问即为正常，否则发短信
 local redis = require("resty.rediscli-speedgo")
 local json = require("cjson")
-local http = require "resty.http"
+local http = require ("resty.http")
+local strutil = require ("resty.string")
 local httpc = http.new()
 httpc:set_timeout(500)
 local red = redis.new()
@@ -74,7 +75,7 @@ local startms = os.time()
             }
 
             local wxurl ='wget --no-check-certificate https://sc.ftqq.com/'..res1.body..'.send?text='..content
-            ngx.log(ngx.ERR,'wxurl'..wxurl)
+            ngx.log(ngx.ERR,'wxurl'..strutil.len('hello'))
             local handle =io.popen(wxurl)
             local result = handle:read("*a")
             handle:close()
