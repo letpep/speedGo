@@ -72,7 +72,10 @@ local startms = os.time()
             local res1 = ngx.location.capture_multi{
                 {"/redis_get_set", {args="key=sendWXMsgtoken"}}
             }
-            local handle =io.popen('wget --no-check-certificate https://sc.ftqq.com/'..res1.body..'.send?text='..content)
+
+            local wxurl ='wget --no-check-certificate https://sc.ftqq.com/'..res1.body..'.send?text='..content
+            ngx.log(ngx.ERR,'wxurl'..wxurl)
+            local handle =io.popen(wxurl)
             local result = handle:read("*a")
             handle:close()
 
