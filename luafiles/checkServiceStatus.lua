@@ -58,7 +58,7 @@ local nowtimestr = os.date("%Y-%m-%d %H:%M:%S",os.time())
             end
         end
         if not httpres then
-            ngx.log(ngx.ERR,'httpresponse is ERROR url:'..url)
+
 
             local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
                 method = 'POST',
@@ -75,6 +75,7 @@ local nowtimestr = os.date("%Y-%m-%d %H:%M:%S",os.time())
             }
             local lenth = string.len(res1.body)
             local token = string.sub(res1.body,1,lenth-1)
+            ngx.log(ngx.ERR,'httpresponse is ERROR url:'..content)
             local wxurl ='wget --no-check-certificate https://sc.ftqq.com/'..token..'.send?text='..content
             ngx.log(ngx.ERR,'wxurl'..wxurl)
             local handle =io.popen(wxurl)
