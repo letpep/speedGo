@@ -29,7 +29,7 @@ local rdskey = 'serversStatus'
     local httpres, httperr = '';
     for i, url in ipairs(res) do
         url = 'http://10.102.4.178:8080/serviceStatus'..''
-        local httpres, httperr = httpc:request_uri(''..v, {
+        local httpres, httperr = httpc:request_uri(''..url, {
             method = 'GET',
             headers = {
                 ["Content-Type"] = "application/json;charset=UTF-8",
