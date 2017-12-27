@@ -3,7 +3,7 @@
 -- User: lee_xin
 -- Date: 17/12/25
 -- Time: 上午11:31
--- To change this template use File | Settings | File Templates.
+-- 检测string型redis key的value值 长度
 --
 local redis = require("resty.rediscli-speedgo")
 local json = require("cjson")
