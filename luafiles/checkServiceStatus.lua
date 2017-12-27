@@ -70,4 +70,4 @@ local rdskey = 'serversStatus'
 
 
     end
-ngx.say('checkservers  toal'..totalnum..'times  errnum: '..erronnum..' times')
+ngx.say('checkservers  totalnum: '..totalnum..' times  errnum: '..erronnum..' times')
