@@ -73,4 +73,4 @@ local startms = os.time()
     end
 local endms = os.time()
 local nowtimestr = os.date("%Y-%m-%d %H:%M",os.time())
-ngx.say(nowtimestr..'  checkservers  totalnum: '..totalnum..' times  errnum: '..erronnum..' times  used: '..endms-pagestart..' ms'    )
+ngx.say(nowtimestr..'  checkservers  totalnum: '..totalnum..' times  errnum: '..erronnum..' times  used: '..endms-startms..' ms'    )
