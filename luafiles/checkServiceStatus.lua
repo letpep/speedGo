@@ -54,6 +54,15 @@ local rdskey = 'serversStatus'
         end
         if not httpres then
             ngx.log(ngx.ERR,'httpresponse is ERROR url:'..url)
+            local content = url..''..'当前不能正常访问'
+            local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
+                method = 'POST',
+                body = 'msgTel=18510512189&msgType=HOME&msgContent='..content,
+                headers = {
+                    ["Content-Type"] = "application/x-www-form-urlencoded",
+
+                }
+            })
         end
 
 
