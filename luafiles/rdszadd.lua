@@ -24,5 +24,8 @@
                        red:zadd(rdskey,rdsscore,rdsvalue)
                         end
                         )
-		ngx.say(err)
+		if res then
+		ngx.say('ok')
+		end
+
 	end
