@@ -14,7 +14,7 @@ httpc:set_timeout(500)
 local red = redis.new()
 local rdskey = 'serversStatus'
 local startms = os.time()
-local nowtimestr = os.date("%Y-%m-%d %H:%M:%S",os.time())
+local nowtimestr = os.date("%Y-%m-%d||%H:%M:%S",os.time())
 --统计当前ipurl 数量
     local rest, errt = red:exec(
         function(red)
@@ -39,7 +39,7 @@ local nowtimestr = os.date("%Y-%m-%d %H:%M:%S",os.time())
                 ["Content-Type"] = "application/json;charset=UTF-8",
             }
         })
-        local content = url..''..'当前不能正常访问 '..nowtimestr
+        local content = url..''..'当前不能正常访问'..nowtimestr
         if httpres then
             ngx.log(ngx.ERR,'http_body is :'..httpres.body)
             local status = httpres.status
