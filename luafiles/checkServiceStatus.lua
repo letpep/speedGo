@@ -10,7 +10,7 @@ local redis = require("resty.rediscli-speedgo")
 local json = require("cjson")
 local http = require "resty.http"
 local httpc = http.new()
-httpc.set_timeout(500)
+httpc:set_timeout(500)
 local red = redis.new()
 local rdskey = 'serversStatus'
 --统计当前ipurl 数量
