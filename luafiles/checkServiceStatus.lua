@@ -21,6 +21,7 @@ local startms = os.time()
         end
     )
     local totalnum = rest
+    local runnum =0;
     local erronnum =0
     local pagestart = 0
     local pageend = rest
@@ -67,15 +68,15 @@ local startms = os.time()
                 }
             })
 --发送微信消息
-            local handle =io.popen('wget --no-check-certificate https://sc.ftqq.com/SCU18938Tccaabd2253cc5b537ba57120fef0184a5a4391bb01819.send?text=g为是什么')
+            local handle =io.popen('wget --no-check-certificate https://sc.ftqq.com/SCU18938Tccaabd2253cc5b537ba57120fef0184a5a4391bb01819.send?text='..content)
             local result = handle:read("*a")
             handle:close()
 
             erronnum= erronnum+1
         end
 
-
+        runnum = runnum+1
     end
 local endms = os.time()
 local nowtimestr = os.date("%Y-%m-%d %H:%M",os.time())
-ngx.say(nowtimestr..'  checkservers  totalnum: '..totalnum..' times  errnum: '..erronnum..' times  used: '..endms-startms..' ms'    )
+ngx.say(nowtimestr..'  checkservers  totalnum: '..runnum..' times  errnum: '..erronnum..' times  used: '..endms-startms..' ms'    )
