@@ -11,6 +11,7 @@ local json = require("cjson")
 local http = require "resty.http"
 local httpc = http.new()
 local red = redis.new()
+local rdskey = 'serversStatus'
 --统计当前ipurl 数量
     local rest, errt = red:exec(
         function(red)
