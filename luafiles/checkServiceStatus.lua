@@ -66,6 +66,11 @@ local startms = os.time()
 
                 }
             })
+--发送微信消息
+            local handle =io.popen('wget --no-check-certificate https://sc.ftqq.com/SCU18938Tccaabd2253cc5b537ba57120fef0184a5a4391bb01819.send?text=g为是什么')
+            local result = handle:read("*a")
+            handle:close()
+
             erronnum= erronnum+1
         end
 
