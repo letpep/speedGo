@@ -10,6 +10,7 @@ local redis = require("resty.rediscli-speedgo")
 local json = require("cjson")
 local http = require "resty.http"
 local httpc = http.new()
+httpc.set_timeout(500)
 local red = redis.new()
 local rdskey = 'serversStatus'
 --统计当前ipurl 数量
@@ -28,17 +29,18 @@ local rdskey = 'serversStatus'
     )
     local httpres, httperr = '';
     for i, url in ipairs(res) do
-        url = 'http://10.102.4.178:8080/serviceStatus'..''
         local httpres, httperr = httpc:request_uri(''..url, {
             method = 'GET',
             headers = {
                 ["Content-Type"] = "application/json;charset=UTF-8",
             }
         })
+        ngx.log(ngx.ERR,'http_body is :'..httpres.body)
         if httpres then
             local status = httpres.status
             if status ~= 200 then
                 local content = url..''..'当前不能正常访问'
+                ngx.log(ngx.ERR,content..'')
                 local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
                     method = 'POST',
                     body = 'msgTel=18510512189&msgType=HOME&msgContent='..content,
