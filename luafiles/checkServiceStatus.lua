@@ -35,7 +35,20 @@ local rdskey = 'serversStatus'
                 ["Content-Type"] = "application/json;charset=UTF-8",
             }
         })
+        if httpres then
+            local status = httpres.status
+            if status ~= 200 then
+                local content = url..''..'当前不能正常访问'
+                local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
+                    method = 'POST',
+                    body = 'msgTel=18510512189&msgType=HOME&msgContent='..content,
+                    headers = {
+                        ["Content-Type"] = "application/x-www-form-urlencoded",
 
-         ngx.log(ngx.ERR,json.encode(httpres))
+                    }
+                })
+            end
+        end
+
 
     end
