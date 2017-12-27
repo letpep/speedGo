@@ -20,6 +20,7 @@ local rdskey = 'serversStatus'
         end
     )
     local totalnum = rest
+    local erronnum =0
     local pagestart = 0
     local pageend = rest
    local res, err = red:exec(
@@ -50,6 +51,7 @@ local rdskey = 'serversStatus'
 
                     }
                 })
+                erronnum= erronnum+1
             end
         end
         if not httpres then
@@ -63,7 +65,9 @@ local rdskey = 'serversStatus'
 
                 }
             })
+            erronnum= erronnum+1
         end
 
 
     end
+ngx.say('checkservers  toal'..totalnum..'times  errnum: '..erronnum..' times')
