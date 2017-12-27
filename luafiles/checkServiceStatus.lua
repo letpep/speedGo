@@ -13,6 +13,7 @@ local httpc = http.new()
 httpc:set_timeout(500)
 local red = redis.new()
 local rdskey = 'serversStatus'
+local startms = os.time()
 --统计当前ipurl 数量
     local rest, errt = red:exec(
         function(red)
@@ -70,4 +71,6 @@ local rdskey = 'serversStatus'
 
 
     end
-ngx.say('checkservers  totalnum: '..totalnum..' times  errnum: '..erronnum..' times')
+local endms = os.time()
+local nowtimestr = os.date("%Y-%m-%d %H:%M",os.time())
+ngx.say(nowtimestr..'  checkservers  totalnum: '..totalnum..' times  errnum: '..erronnum..' times  used: '..endms-pagestart..' ms'    )
