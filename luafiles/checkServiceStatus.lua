@@ -35,8 +35,9 @@ local rdskey = 'serversStatus'
                 ["Content-Type"] = "application/json;charset=UTF-8",
             }
         })
-        ngx.log(ngx.ERR,'http_body is :'..httpres.body)
+
         if httpres then
+            ngx.log(ngx.ERR,'http_body is :'..httpres.body)
             local status = httpres.status
             if status ~= 200 then
                 local content = url..''..'当前不能正常访问'
@@ -50,6 +51,9 @@ local rdskey = 'serversStatus'
                     }
                 })
             end
+        end
+        if not httpres then
+            ngx.log(ngx.ERR,'httpresponse is ERROR url:'..'url')
         end
 
 
