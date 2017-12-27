@@ -35,7 +35,7 @@ local rdskey = 'serversStatus'
                 ["Content-Type"] = "application/json;charset=UTF-8",
             }
         })
-        if not httpres then
-         ngx.log(ngx.ERR,'http error')
-        end
+
+         ngx.log(ngx.ERR,json.encode(httpres))
+
     end
