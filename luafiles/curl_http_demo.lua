@@ -24,6 +24,6 @@ if httpres then
     ngx.say(httpres.body..httpres.status..'')
 end
 if not httpres then
-    ngx.say(11)
+    ngx.say('11'..httperr)
 end
 
