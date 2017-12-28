@@ -9,7 +9,7 @@
 local redis = require("resty.rediscli-speedgo")
 local json = require("cjson")
 local http = require ("resty.http")
-local lsocket  = require("lsocket")
+local socket  = require("socket")
 local httpc = http.new()
 httpc:set_timeout(500)
 local red = redis.new()
@@ -87,7 +87,8 @@ local nowtimestr = os.date("%Y-%m-%d%H:%M:%S",os.time())
         end
 
         runnum = runnum+1
-        lsocket.select(1)
+    --暂停50毫秒
+        socket.select(nil,nil,0.05)
     end
 local endms = os.time()
 
