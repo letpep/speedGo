@@ -60,7 +60,7 @@ local nowtimestr = os.date("%Y-%m-%d%H:%M:%S",os.time())
         end
         if not httpres then
 
-
+            content = content..httperr..''
             local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
                 method = 'POST',
                 body = 'msgTel=18510512189&msgType=HOME&msgContent='..content,
@@ -88,7 +88,7 @@ local nowtimestr = os.date("%Y-%m-%d%H:%M:%S",os.time())
 
         runnum = runnum+1
     --暂停50毫秒
-        socket.select(nil,nil,0.05)
+--        socket.select(nil,nil,0.05)
     end
 local endms = os.time()
 
