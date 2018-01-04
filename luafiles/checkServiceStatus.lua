@@ -91,7 +91,7 @@ repeat
                 { "/redis_get_set", { args = "key=sendWXMsgtoken" } }
             }
             local lenth = string.len(res1.body)
-            local token = string.sub(res1.body, 1, lenth - 1)
+            local token = string.sub(res1.body, 1, lenth)
             ngx.log(ngx.ERR, 'httpresponse is ERROR url:' .. content)
             local wxurl = 'wget --no-check-certificate https://sc.ftqq.com/' .. token .. '.send?text=' .. content
             ngx.log(ngx.ERR, 'wxurl' .. wxurl)
