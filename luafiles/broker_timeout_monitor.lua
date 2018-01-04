@@ -14,17 +14,17 @@ local querypre = '"query":{"bool":{"must":[';
 local queryend = '],"must_not":[]}}';
 local queryString = '{"query_string":{"analyze_wildcard":true,"query":"timed out"}}'
 local querymatch = '{"match_phrase":{"path":{"query":"*errInvokerResult*"}}}'
-local nowtime = os.time();--时间戳 秒
-local nowtimestr = os.date("%Y-%m-%d %H:%M",os.time())
-local last1hour = nowtime-60*60;--一小时前
+local nowtime = os.time(); --时间戳 秒
+local nowtimestr = os.date("%Y-%m-%d %H:%M", os.time())
+local last1hour = nowtime - 60 * 60; --一小时前
 
-local querytime = '{"range":{"@timestamp":{"gte":'..1000*last1hour..',"format":"epoch_millis"}}}'
-local queryjson = querypre..queryString..','..querymatch..','..querytime..queryend;
-local request_boby = '{"version":true,"size":0,'..queryjson..'}'
-ngx.log(ngx.ERR,request_boby)
+local querytime = '{"range":{"@timestamp":{"gte":' .. 1000 * last1hour .. ',"format":"epoch_millis"}}}'
+local queryjson = querypre .. queryString .. ',' .. querymatch .. ',' .. querytime .. queryend;
+local request_boby = '{"version":true,"size":0,' .. queryjson .. '}'
+ngx.log(ngx.ERR, request_boby)
 local res, err = httpc:request_uri("http://10.102.4.254:5601/api/console/proxy?path=_search&method=POST", {
     method = 'POST',
-    body = ''..request_boby,
+    body = '' .. request_boby,
     headers = {
         ["Content-Type"] = "application/json;charset=UTF-8",
         ["kbn-version"] = "5.6.4",
@@ -37,17 +37,15 @@ if not res then
 end
 local resultd = json.decode(res.body)
 local hits = resultd["hits"]["total"]
-if hits>50 then
-    local content ='当前超时'..hits..'次'
+if hits > 50 then
+    local content = '当前超时' .. hits .. '次'
     local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
         method = 'POST',
-        body = 'msgTel=18510512189&msgType=HOME&msgContent='..content,
+        body = 'msgTel=18510512189&msgType=HOME&msgContent=' .. content,
         headers = {
             ["Content-Type"] = "application/x-www-form-urlencoded",
-
         }
     })
-
 end
 
-ngx.say(nowtimestr..' '..hits..' times')
+ngx.say(nowtimestr .. ' ' .. hits .. ' times')
