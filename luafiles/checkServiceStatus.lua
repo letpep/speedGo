@@ -17,6 +17,7 @@ local rdskey = 'serversStatus'
 local startms = os.time()
 local nowtimestr = nil
 local erronnum = nil
+local runnum = nil
 local table smsInfo = {}
 --定义发短信的函数
 function sendmsg(content)
@@ -33,13 +34,14 @@ local repeattimes =0;
 repeat
     repeattimes = repeattimes+1;
     erronnum = 0
+    runnum = 0
     nowtimestr = os.date("%Y-%m-%d%H:%M:%S", os.time())
     --统计当前ipurl 数量
     local rest, errt = red:exec(function(red)
         return red:zcard(rdskey)
     end)
     local totalnum = rest
-    local runnum = 0;
+
 
     local pagestart = 0
     local pageend = rest
