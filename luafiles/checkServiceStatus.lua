@@ -109,7 +109,7 @@ repeat
     if (erronnum > 0) then
         socket.select(nil, nil, 1)
     end
-until erronnum <= 1 or repeattimes>5
+until erronnum < 1 or repeattimes>5
 local endms = os.time()
 
 ngx.say(nowtimestr .. '  checkservers  totalnum: ' .. runnum .. ' times  errnum: ' .. erronnum .. ' times  used: ' .. endms - startms .. ' ms')
