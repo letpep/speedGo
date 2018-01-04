@@ -15,7 +15,11 @@ httpc:set_timeout(500)
 local red = redis.new()
 local rdskey = 'serversStatus'
 local startms = os.time()
-local nowtimestr = os.date("%Y-%m-%d%H:%M:%S",os.time())
+local nowtimestr = nil
+local erronnum =nil
+repeat
+    erronnum =0
+    nowtimestr = os.date("%Y-%m-%d%H:%M:%S",os.time())
 --统计当前ipurl 数量
     local rest, errt = red:exec(
         function(red)
@@ -24,7 +28,7 @@ local nowtimestr = os.date("%Y-%m-%d%H:%M:%S",os.time())
     )
     local totalnum = rest
     local runnum =0;
-    local erronnum =0
+
     local pagestart = 0
     local pageend = rest
    local res, err = red:exec(
@@ -88,8 +92,12 @@ local nowtimestr = os.date("%Y-%m-%d%H:%M:%S",os.time())
 
         runnum = runnum+1
     --暂停50毫秒
---        socket.select(nil,nil,0.05)
+        socket.select(nil,nil,0.05)
     end
+    if(erronnum>0) then
+        socket.select(nil,nil,1)
+    end
+    until erronnum >0
 local endms = os.time()
 
 ngx.say(nowtimestr..'  checkservers  totalnum: '..runnum..' times  errnum: '..erronnum..' times  used: '..endms-startms..' ms'    )
