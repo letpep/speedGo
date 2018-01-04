@@ -29,8 +29,9 @@ function sendmsg(content)
     })
     return res, err
 end
-
+local repeattimes =0;
 repeat
+    repeattimes = repeattimes+1;
     erronnum = 0
     nowtimestr = os.date("%Y-%m-%d%H:%M:%S", os.time())
     --统计当前ipurl 数量
@@ -106,7 +107,7 @@ repeat
     if (erronnum > 0) then
         socket.select(nil, nil, 1)
     end
-until erronnum > 0
+until erronnum <= 1 or repeattimes>5
 local endms = os.time()
 
 ngx.say(nowtimestr .. '  checkservers  totalnum: ' .. runnum .. ' times  errnum: ' .. erronnum .. ' times  used: ' .. endms - startms .. ' ms')
