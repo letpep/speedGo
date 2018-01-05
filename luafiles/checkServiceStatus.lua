@@ -56,7 +56,7 @@ repeat
                 ["Content-Type"] = "application/json;charset=UTF-8",
             }
         })
-        local content = url .. '' .. '当前不能正常访问' .. nowtimestr
+        local content = '报警'..url .. '' .. '当前不能正常访问' .. nowtimestr
 
         if httpres then
             ngx.log(ngx.ERR, 'http_body is :' .. httpres.body)
@@ -70,7 +70,7 @@ repeat
                     if (smsInfo[url] == nil) then
                         smsInfo[url] = 1
                     else
-                        smsInfo[url] = smsInfo[url] + 1;
+                        smsInfo[url] = smsInfo[url] + 1
                     end
                 end
             end
@@ -78,12 +78,14 @@ repeat
         if not httpres then
             if (smsInfo[url] == nil or smsInfo[url] < 2) then
                 content = content .. httperr .. ''
-                sendmsg(content)
+
                 if (smsInfo[url] == nil) then
                     smsInfo[url] = 1
                 else
-                    smsInfo[url] = smsInfo[url] + 1;
+                    smsInfo[url] = smsInfo[url] + 1
+                    content = '重要'..content
                 end
+                sendmsg(content)
             end
             --发送微信消息
             --从redis获取发微信url
