@@ -4,7 +4,7 @@
 -- Date: 17/12/15
 -- Time: 下午2:57
 -- To change this template use File | Settings | File Templates.
---
+--监控超时次数
 local json = require("cjson")
 local http = require "resty.http"
 local httpc = http.new()
@@ -37,6 +37,21 @@ if not res then
 end
 local resultd = json.decode(res.body)
 local hits = resultd["hits"]["total"]
+--将数据写入有序队列
+local  rdskey_timeout = "timeoutLine"
+local  rdskey_score =nowtime
+local  rdskey_value = nowtimestr..":"..hits..' times'
+if hits > 0 then
+    local content = '当前超时' .. hits .. '次'
+    local res, err = httpc:request_uri("http://letpep.com/redis_zadd", {
+        method = 'POST',
+        body = 'key='..rdskey_timeout..'&value='..rdskey_value..'&score=' ..rdskey_score,
+        headers = {
+            ["Content-Type"] = "application/x-www-form-urlencoded",
+        }
+    })
+end
+
 if hits > 50 then
     local content = '当前超时' .. hits .. '次'
     local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
