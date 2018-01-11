@@ -22,15 +22,15 @@ local table smsInfo = {}
 --定义从redis 获取指定key的值
 function getRedisValue(rdskey)
 
-    local res,err = ngx.location.capture('/redis_get_set',
-    { args = {key = ''..rdskey} }
-)
+    local res, err = ngx.location.capture('/redis_get_set',
+        { args = { key = '' .. rdskey } })
     return res, err
 end
+
 --定义发短信的函数
 function sendmsg(content)
-    local resswitch,errswitch = getRedisValue('smsSwitch')
-    if resswitch['body'] ==0 then
+    local resswitch, errswitch = getRedisValue('smsSwitch')
+    if resswitch['body'] == 0 then
         return nil
     end
     local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
@@ -42,9 +42,26 @@ function sendmsg(content)
     })
     return res, err
 end
-local repeattimes =0;
+
+--定义发微信信的函数
+function sendwxmsg(content)
+    local resswitch, errswitch = getRedisValue('WXSwitch')
+    if resswitch['body'] == 0 then
+        return nil
+    end
+    local res1, err1 = getRedisValue('sendWXMsgtoken')
+    local token = res1.body .. ''
+    local wxurl = 'wget --no-check-certificate https://sc.ftqq.com/' .. token .. '.send?text=' .. content
+    --ngx.log(ngx.ERR, 'wxurl' .. wxurl)
+    local handle = io.popen(wxurl)
+    local result = handle:read("*a")
+    handle:close()
+    return result
+end
+
+local repeattimes = 0;
 repeat
-    repeattimes = repeattimes+1;
+    repeattimes = repeattimes + 1;
     erronnum = 0
     runnum = 0
     nowtimestr = os.date("%Y-%m-%d%H:%M:%S", os.time())
@@ -68,48 +85,43 @@ repeat
                 ["Content-Type"] = "application/json;charset=UTF-8",
             }
         })
-        local content = '报警'..url .. '' .. '当前不能正常访问' .. nowtimestr
+        local content = '报警' .. url .. '' .. '当前不能正常访问' .. nowtimestr
 
         if httpres then
-            ngx.log(ngx.ERR, 'http_body is :' .. httpres.body)
             local status = httpres.status
             if status ~= 200 then
                 if (smsInfo[url] == nil or smsInfo[url] < 2) then
                     ontent = content .. 'status:' .. status
-                    ngx.log(ngx.ERR, content .. '')
-                    sendmsg(content)
+                    ngx.log(ngx.ERR, 'status is error : ' .. status .. '消息内容: ' .. content .. 'http返回值: ' .. httpres.body)
                     erronnum = erronnum + 1
                     if (smsInfo[url] == nil) then
                         smsInfo[url] = 1
                     else
                         smsInfo[url] = smsInfo[url] + 1
+                        content = '重要'..content
                     end
+                    sendmsg(content)
                 end
+                sendwxmsg(content)
             end
         end
         if not httpres then
+            content = content .. httperr .. ''
+            ngx.log(ngx.ERR, '请求失败：' .. content)
             if (smsInfo[url] == nil or smsInfo[url] < 2) then
-                content = content .. httperr .. ''
 
                 if (smsInfo[url] == nil) then
                     smsInfo[url] = 1
                 else
                     smsInfo[url] = smsInfo[url] + 1
-                    content = '重要'..content
+                    content = '重要' .. content
                 end
                 sendmsg(content)
             end
             --发送微信消息
             --从redis获取发微信url
-            local res1,err1 = getRedisValue('sendWXMsgtoken')
-            local lenth = string.len(res1.body)
-            local token = string.sub(res1.body, 1, lenth)
             ngx.log(ngx.ERR, 'httpresponse is ERROR url:' .. content)
-            local wxurl = 'wget --no-check-certificate https://sc.ftqq.com/' .. token .. '.send?text=' .. content
-            ngx.log(ngx.ERR, 'wxurl' .. wxurl)
-            local handle = io.popen(wxurl)
-            local result = handle:read("*a")
-            handle:close()
+            sendwxmsg(content)
 
             erronnum = erronnum + 1
         end
@@ -121,7 +133,7 @@ repeat
     if (erronnum > 0) then
         socket.select(nil, nil, 1)
     end
-until erronnum < 1 or repeattimes>5
+until erronnum < 1 or repeattimes > 5
 local endms = os.time()
 
 ngx.say(nowtimestr .. '  checkservers  totalnum: ' .. runnum .. ' times  errnum: ' .. erronnum .. ' times  used: ' .. endms - startms .. ' ms')
