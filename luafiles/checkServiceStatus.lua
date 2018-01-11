@@ -34,7 +34,7 @@ end
 --定义发短信的函数
 function sendmsg(content)
     local resswitch, errswitch = getRedisValue('smsSwitch')
-    if resswitch['body'] == 0 then
+    if resswitch['body'] == '0' then
         return nil
     end
     local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
@@ -50,7 +50,8 @@ end
 --定义发微信信的函数
 function sendwxmsg(content)
     local resswitch, errswitch = getRedisValue('WXSwitch')
-    if resswitch['body'] == 0 then
+
+    if resswitch['body'] == '0' then
         return nil
     end
     local res1, err1 = getRedisValue('sendWXMsgtoken')
@@ -94,10 +95,10 @@ repeat
         if httpres then
             local status = httpres.status
             if status ~= 200 then
+                erronnum = erronnum + 1
                 if (smsInfo[url] == nil or smsInfo[url] < 2) then
                     ontent = content .. 'status:' .. status
                     ngx.log(ngx.ERR, 'status is error : ' .. status .. '消息内容: ' .. content .. 'http返回值: ' .. httpres.body)
-                    erronnum = erronnum + 1
                     if (smsInfo[url] == nil) then
                         smsInfo[url] = 1
                     else
