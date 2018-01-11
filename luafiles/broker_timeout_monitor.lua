@@ -10,10 +10,10 @@ local http = require "resty.http"
 local httpc = http.new()
 --获取设置的超时阀值 ，如果 没有设置默认为50
 local timeouttimes = nil
-httpc:connect("http://letpep.com/", 80)
+httpc:connect("http://letpep.com", 80)
 local res1, err1 = httpc:request{
     query = {
-        key = 'brokerime_out_line',
+        key = 'broker_time_out_line',
 
     },
     path = "/redis_get_set"
