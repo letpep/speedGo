@@ -19,8 +19,20 @@ local nowtimestr = nil
 local erronnum = nil
 local runnum = nil
 local table smsInfo = {}
+--定义从redis 获取指定key的值
+function getRedisValue(rdskey)
+
+    local res,err = ngx.location.capture('/redis_get_set',
+    { args = {key = ''..rdskey} }
+)
+    return res, err
+end
 --定义发短信的函数
 function sendmsg(content)
+    local resswitch,errswitch = getRedisValue('sendWXMsgtoken')
+    if resswitch['body'] ==0 then
+        return nil
+    end
     local res, err = httpc:request_uri("http://10.102.251.242/servletSend", {
         method = 'POST',
         body = 'msgTel=18510512189&msgType=HOME&msgContent=' .. content,
@@ -89,9 +101,7 @@ repeat
             end
             --发送微信消息
             --从redis获取发微信url
-            local res1 = ngx.location.capture_multi {
-                { "/redis_get_set", { args = "key=sendWXMsgtoken" } }
-            }
+            local res1,err1 = getRedisValue('sendWXMsgtoken')
             local lenth = string.len(res1.body)
             local token = string.sub(res1.body, 1, lenth)
             ngx.log(ngx.ERR, 'httpresponse is ERROR url:' .. content)
