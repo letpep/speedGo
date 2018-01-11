@@ -93,7 +93,7 @@ repeat
         local content = '报警' .. url .. '' .. '当前不能正常访问' .. nowtimestr
         if(httpres) then
         local rpsbody =httpres.body..''
-        local  matchres = string.match(rpsbody,'startTime:2018-01-1')
+        local  matchres = string.find(rpsbody,'startTime:2018-01-1',1,true)
         if(matchres == nil)then
             ngx.log(ngx.ERR,'nott.'..rpsbody)
             httpres.status=500
