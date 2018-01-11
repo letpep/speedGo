@@ -29,7 +29,7 @@ function getRedisValue(rdskey)
 end
 --定义发短信的函数
 function sendmsg(content)
-    local resswitch,errswitch = getRedisValue('sendWXMsgtoken')
+    local resswitch,errswitch = getRedisValue('smsSwitch')
     if resswitch['body'] ==0 then
         return nil
     end
