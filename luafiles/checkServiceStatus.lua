@@ -4,8 +4,12 @@
 -- Date: 17/12/27
 -- Time: 下午4:19
 -- 检测所有服务的tomcat是否正常
-
 -- 从redis 服务的访问地址 ，然后就行wget ，如果能正常访问即为正常，否则发短信
+--将监控的url添入到有序队列
+-- -- curl url/redis_zadd  -d 'key=serversStatus&value=127.0.0.1/status&score=100'
+--设置短信 微信的发送开关 0 代表关 1 代表开 curl url/redis_get_set -d 'key=smsSwitch&value=1'
+-- curl url/redis_get_set -d 'key=WXSwitch&value=1'
+
 local redis = require("resty.rediscli-speedgo")
 local json = require("cjson")
 local http = require("resty.http")
