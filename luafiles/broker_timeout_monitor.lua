@@ -8,6 +8,24 @@
 local json = require("cjson")
 local http = require "resty.http"
 local httpc = http.new()
+--获取设置的超时阀值 ，如果 没有设置默认为50
+local timeouttimes = nil
+httpc:connect("http://letpep.com/", 80)
+local res1, err1 = httpc:request{
+    query = {
+        key = 'brokerime_out_line',
+
+    },
+    path = "/redis_get_set"
+}
+
+if(res1.status==200) then
+    local body = res1:read_body()
+    timeouttimes = body
+end
+if timeouttimes==nil then
+    timeouttimes =50
+end
 --只需要从请求串中json里的到quer属性
 --切记查询字符串中加的双引号在这里要去掉，如下"timed out"
 local querypre = '"query":{"bool":{"must":[';
