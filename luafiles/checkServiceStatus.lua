@@ -91,14 +91,15 @@ repeat
             }
         })
         local content = '报警' .. url .. '' .. '当前不能正常访问' .. nowtimestr
-        if(httpres) then
-        local rpsbody =httpres.body..''
-        local  matchres = string.find(rpsbody,'startTime:2018-01-1',1,true)
-        if(matchres == nil)then
-            ngx.log(ngx.ERR,'nott.'..rpsbody)
-            httpres.status=500
-        end
-        end
+--        if(httpres) then
+--        local rpsbody =httpres.body..''
+            --string.find(rpsbody,'startTime:2018-01-1',1,true) 1,从下标1开始，true代表不使用匹配符
+--        local  matchres = string.find(rpsbody,'startTime:2018-01-1',1,true)
+--        if(matchres == nil)then
+--            ngx.log(ngx.ERR,'nott.'..rpsbody)
+--            httpres.status=500
+--        end
+--        end
         if httpres then
             local status = httpres.status
             if status ~= 200 then
@@ -145,7 +146,7 @@ repeat
     if (erronnum > 0) then
         socket.select(nil, nil, 1)
     end
-until erronnum < 1 or repeattimes > 0
+until erronnum < 1 or repeattimes > 4
 local endms = os.time()
 
 ngx.say(nowtimestr .. '  checkservers  totalnum: ' .. runnum .. ' times  errnum: ' .. erronnum .. ' times  used: ' .. endms - startms .. ' ms')
