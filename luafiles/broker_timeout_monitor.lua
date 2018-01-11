@@ -40,7 +40,7 @@ local hits = resultd["hits"]["total"]
 --将数据写入有序队列
 local  rdskey_timeout = "timeoutLine"
 local  rdskey_score =nowtime
-local  rdskey_value = nowtimestr.." occured  "..hits..' times'
+local  rdskey_value = nowtimestr..":"..hits..' times'
 if hits > 0 then
     local content = '当前超时' .. hits .. '次'
     local res, err = httpc:request_uri("http://letpep.com/redis_zadd", {
