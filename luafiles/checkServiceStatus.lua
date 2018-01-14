@@ -104,31 +104,34 @@ repeat
             local status = httpres.status
             if status ~= 200 then
                 erronnum = erronnum + 1
-                if (smsInfo[url] == nil or smsInfo[url] < 2) then
-                    ontent = content .. 'status:' .. status
+                if (smsInfo[url] == nil) then
+                    smsInfo[url] = 1
+                else
+                    smsInfo[url] = smsInfo[url] + 1
+                    content = '重要'..content
+                end
+                ontent = content .. 'status:' .. status.. '当前失败次数：'..smsInfo[url]
+                if (smsInfo[url] ~= nil and  smsInfo[url] > 2 and smsInfo[url] < 4) then
+
                     ngx.log(ngx.ERR, 'status is error : ' .. status .. '消息内容: ' .. content .. 'http返回值: ' .. httpres.body)
-                    if (smsInfo[url] == nil) then
-                        smsInfo[url] = 1
-                    else
-                        smsInfo[url] = smsInfo[url] + 1
-                        content = '重要'..content
-                    end
+
                     sendmsg(content)
                 end
                 sendwxmsg(content)
             end
         end
         if not httpres then
-            content = content .. httperr .. ''
+            if (smsInfo[url] == nil) then
+                smsInfo[url] = 1
+            else
+                smsInfo[url] = smsInfo[url] + 1
+                content = '重要' .. content
+            end
+            content = content .. httperr .. '当前失败次数：'..smsInfo[url]
             ngx.log(ngx.ERR, '请求失败：' .. content)
-            if (smsInfo[url] == nil or smsInfo[url] < 2) then
+            if (smsInfo[url] ~= nil and  smsInfo[url] > 1  and smsInfo[url] < 4) then
 
-                if (smsInfo[url] == nil) then
-                    smsInfo[url] = 1
-                else
-                    smsInfo[url] = smsInfo[url] + 1
-                    content = '重要' .. content
-                end
+
                 sendmsg(content)
             end
             --发送微信消息
